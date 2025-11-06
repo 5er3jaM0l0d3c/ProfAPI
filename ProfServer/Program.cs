@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ProfServer.API.Middlewares;
 using ProfServer.Application.Interfaces;
-using ProfServer.Application.Security;
 using ProfServer.Application.Services;
 using ProfServer.Infrastructure.Dapper;
 using ProfServer.Infrastructure.DbContext;
 using ProfServer.Infrastructure.Repositories;
+using ProfServer.Models.Official;
 using Serilog;
 using System.Text;
 
@@ -75,7 +75,11 @@ try
     builder.Services.AddSingleton<IDbConnectionFactory>(new NpgsqlConnectionFactory(connectionString));
 
     builder.Services.AddScoped<IMachineRepository, MachineRepository>();
+    builder.Services.AddScoped<IPaymentTypeRepository, PaymentTypeRepository>();
+
     builder.Services.AddScoped<IMachineService, MachineService>();
+    builder.Services.AddScoped<IPaymentTypeService, PaymentTypeService>();
+    builder.Services.AddScoped<ITokenService, TokenService>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

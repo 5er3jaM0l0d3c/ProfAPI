@@ -4,6 +4,7 @@ using ProfServer.Application.DTOs.Requests;
 using ProfServer.Application.Interfaces;
 using ProfServer.Application.Mappings;
 using ProfServer.Models;
+using ProfServer.Models.Official;
 using System.Reflection.Metadata;
 
 namespace ProfServer.Application.Services

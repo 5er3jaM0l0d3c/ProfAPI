@@ -1,6 +1,6 @@
 using System;
 
-namespace ProfServer.Application.Security
+namespace ProfServer.Models.Official
 {
     public sealed class JwtSettings
     {

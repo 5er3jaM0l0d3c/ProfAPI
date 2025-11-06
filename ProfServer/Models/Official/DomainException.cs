@@ -1,4 +1,4 @@
-﻿namespace ProfServer.Models
+﻿namespace ProfServer.Models.Official
 {
     public abstract class DomainException : Exception
     {

@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ProfServer.Application.Interfaces;
-using ProfServer.Application.Security;
+using ProfServer.Models.Official;
 
 namespace ProfServer.Application.Services
 {
