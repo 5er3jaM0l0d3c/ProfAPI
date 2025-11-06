@@ -78,11 +78,13 @@ try
     builder.Services.AddScoped<IPaymentTypeRepository, PaymentTypeRepository>();
     builder.Services.AddScoped<IMachineStatusRepository, MachineStatusRepository>();
     builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+    builder.Services.AddScoped<IManufactureCountryRepository, ManufactureCountryRepository>();
 
     builder.Services.AddScoped<IMachineService, MachineService>();
     builder.Services.AddScoped<IPaymentTypeService, PaymentTypeService>();
     builder.Services.AddScoped<IMachineStatusService, MachineStatusService>();
     builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
+    builder.Services.AddScoped<IManufactureCountryService, ManufactureCountryService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
 
     builder.Services.AddControllers();
