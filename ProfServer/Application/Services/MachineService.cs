@@ -12,12 +12,16 @@ namespace ProfServer.Application.Services
     public class MachineService : IMachineService
     {
         private readonly IMachineRepository _machineRepository;
+        private readonly IPaymentTypeService _paymentTypeService;
+        private readonly IMachineStatusService _machineStatusService;
         private readonly IMapper _mapper;
         private readonly ILogger<MachineService> _logger;
 
-        public MachineService(IMachineRepository machineRepository, IMapper mapper, ILogger<MachineService> logger)
+        public MachineService(IMachineRepository machineRepository, IPaymentTypeService paymentTypeService, IMachineStatusService machineStatusService, IMapper mapper, ILogger<MachineService> logger)
         {
             _machineRepository = machineRepository;
+            _paymentTypeService = paymentTypeService;
+            _machineStatusService = machineStatusService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -66,6 +70,9 @@ namespace ProfServer.Application.Services
                     throw new NotFoundException(nameof(Machine), id);
                 }
 
+                machine.PaymentType = await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
+                machine.Status = await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+
                 return _mapper.Map<MachineDTO>(machine);
             }
             catch (Exception ex)
@@ -79,8 +86,15 @@ namespace ProfServer.Application.Services
         {
             try
             {
-                return await _machineRepository.GetMachinesAsync()
-                    .ContinueWith(t => _mapper.Map<IEnumerable<MachineDTO>>(t.Result));
+                var machines = await _machineRepository.GetMachinesAsync();
+
+                foreach (var machine in machines)
+                {
+                    machine.PaymentType = await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
+                    machine.Status = await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+                }
+
+                return _mapper.Map<IEnumerable<MachineDTO>>(machines);
             }
             catch (Exception ex)
             {
