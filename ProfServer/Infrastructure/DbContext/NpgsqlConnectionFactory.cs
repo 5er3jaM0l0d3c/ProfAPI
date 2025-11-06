@@ -12,9 +12,9 @@ namespace ProfServer.Infrastructure.DbContext
             _connectionString = connectionString;
         }
 
-        public DbConnection CreateConnection(string connectionString)
+        public DbConnection CreateConnection()
         {
-            return new NpgsqlConnection(connectionString);
+            return new NpgsqlConnection(_connectionString);
         }
     }
 }

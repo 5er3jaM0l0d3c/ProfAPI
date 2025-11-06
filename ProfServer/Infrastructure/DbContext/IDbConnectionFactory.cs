@@ -4,6 +4,6 @@ namespace ProfServer.Infrastructure.DbContext
 {
     public interface IDbConnectionFactory
     {
-        DbConnection CreateConnection(string connectionString);
+        DbConnection CreateConnection();
     }
 }
