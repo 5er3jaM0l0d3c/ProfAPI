@@ -14,14 +14,21 @@ namespace ProfServer.Application.Services
         private readonly IMachineRepository _machineRepository;
         private readonly IPaymentTypeService _paymentTypeService;
         private readonly IMachineStatusService _machineStatusService;
+        private readonly IManufacturerService _manufacturerService;
         private readonly IMapper _mapper;
         private readonly ILogger<MachineService> _logger;
 
-        public MachineService(IMachineRepository machineRepository, IPaymentTypeService paymentTypeService, IMachineStatusService machineStatusService, IMapper mapper, ILogger<MachineService> logger)
+        public MachineService(IMachineRepository machineRepository,
+            IPaymentTypeService paymentTypeService, 
+            IMachineStatusService machineStatusService,
+            IManufacturerService manufacturerService,
+            IMapper mapper,
+            ILogger<MachineService> logger)
         {
             _machineRepository = machineRepository;
             _paymentTypeService = paymentTypeService;
             _machineStatusService = machineStatusService;
+            _manufacturerService = manufacturerService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -72,6 +79,7 @@ namespace ProfServer.Application.Services
 
                 machine.PaymentType = await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
                 machine.Status = await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+                machine.Manufacturer = await _manufacturerService.GetManufacturerByIdAsync(machine.ManufacturerId);
 
                 return _mapper.Map<MachineDTO>(machine);
             }
@@ -92,6 +100,7 @@ namespace ProfServer.Application.Services
                 {
                     machine.PaymentType = await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
                     machine.Status = await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+                    machine.Manufacturer = await _manufacturerService.GetManufacturerByIdAsync(machine.ManufacturerId);
                 }
 
                 return _mapper.Map<IEnumerable<MachineDTO>>(machines);
