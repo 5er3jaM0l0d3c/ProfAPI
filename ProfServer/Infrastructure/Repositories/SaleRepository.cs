@@ -2,6 +2,7 @@
 using ProfServer.Application.Interfaces;
 using ProfServer.Infrastructure.DbContext;
 using ProfServer.Models;
+using ProfServer.Models.Official;
 
 namespace ProfServer.Infrastructure.Repositories
 {
@@ -18,22 +19,28 @@ namespace ProfServer.Infrastructure.Repositories
         {
             using var connection = _dbConnectionFactory.CreateConnection();
             int result;
+            await connection.OpenAsync();
             var trans = await connection.BeginTransactionAsync();
             try
             {
                 string sql = @"
-                INSERT INTO ""Sale"" (""MachineId"", ""ProductId"", ""Quantity"", ""Date"", ""PaymentTypeId"")
-                VALUES (@MachineId, @ProductId, @Quantity, @Date, @PaymentTypeId)
+                INSERT INTO ""Sale"" (""MachineId"", ""ProductId"", ""Quantity"", ""PaymentTypeId"")
+                VALUES (@MachineId, @ProductId, @Quantity, @PaymentTypeId)
                 RETURNING ""Id""";
 
                 result = await connection.ExecuteScalarAsync<int>(sql, sale);
+
                 sql = @"
                 UPDATE ""Machine_Product""
                 SET ""Quantity"" = ""Quantity"" - @Quantity
                 WHERE ""MachineId"" = @MachineId AND ""ProductId"" = @ProductId";
 
-                await connection.ExecuteAsync(sql, sale);
+                if(await connection.ExecuteAsync(sql, sale) <= 0)
+                {
+                    throw new NotFoundException(nameof(Machine_Product), $"MachineId: {sale.MachineId}, ProductId: {sale.ProductId}");
+                }
                 await trans.CommitAsync();
+                await connection.CloseAsync();
 
             }
             catch (Exception)

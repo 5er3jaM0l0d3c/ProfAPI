@@ -20,7 +20,7 @@ namespace ProfServer.API.Controllers
         }
 
         [HttpGet("product/{id}")]
-        public async Task<ActionResult<IEnumerable<Machine_ProductDTO>>> GetMachinesWhereProduct(int id)
+        public async Task<ActionResult<IEnumerable<Machine_Product>>> GetMachinesWhereProduct(int id)
         {
             var machine_products = await _machineService.GetMachinesWhereProductAsync(id);
             return Ok(machine_products);

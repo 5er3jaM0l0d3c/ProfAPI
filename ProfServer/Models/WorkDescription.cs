@@ -1,6 +1,6 @@
 ﻿namespace ProfServer.Models
 {
-    public class WorkDescribtion
+    public class WorkDescription
     {
         public int Id { get; set; }
         public required string Name { get; set; }

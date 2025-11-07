@@ -9,21 +9,17 @@ namespace ProfServer.Application.Services
     public class Machine_ProductService : IMachine_ProductService
     {
         private readonly IMachine_ProductRepository _machine_ProductRepository;
-        private readonly IMachineService _machineService;
-        private readonly IProductService _productService;
         private readonly ILogger<Machine_ProductService> _logger;
         private readonly IMapper _mapper;
 
-        public Machine_ProductService(IMachine_ProductRepository machine_ProductRepository, IMachineService machineService, IProductService productService, IMapper mapper, ILogger<Machine_ProductService> logger)
+        public Machine_ProductService(IMachine_ProductRepository machine_ProductRepository, IMapper mapper, ILogger<Machine_ProductService> logger)
         {
             _machine_ProductRepository = machine_ProductRepository;
-            _machineService = machineService;
-            _productService = productService;
             _mapper = mapper;
             _logger = logger;
         }
 
-        public async Task<Machine_ProductDTO> CreateMachine_ProductAsync(CreateMachine_ProductRequest request)
+        public async Task<Machine_Product> CreateMachine_ProductAsync(CreateMachine_ProductRequest request)
         {
             try
             {
@@ -55,7 +51,7 @@ namespace ProfServer.Application.Services
                 throw;
             }
         }
-        public async Task<Machine_ProductDTO> GetMachine_ProductByIdAsync(int id)
+        public async Task<Machine_Product> GetMachine_ProductByIdAsync(int id)
         {
             try
             {
@@ -63,7 +59,7 @@ namespace ProfServer.Application.Services
                 if (machine_product == null)
                     throw new NotFoundException(nameof(Machine_Product), id);
 
-                return _mapper.Map<Machine_ProductDTO>(machine_product);
+                return _mapper.Map<Machine_Product>(machine_product);
             }
             catch (Exception ex)
             {
@@ -72,14 +68,14 @@ namespace ProfServer.Application.Services
             }
         }
 
-        public async Task<Machine_ProductDTO> GetMachine_ProductByMachineAndProductAsync(int machineId, int productId)
+        public async Task<Machine_Product> GetMachine_ProductByMachineAndProductAsync(int machineId, int productId)
         {
             try
             {
                 var machine_product = await _machine_ProductRepository.GetMachine_ProductByMachineAndProductId(machineId, productId);
                 if (machine_product == null) throw new NotFoundException(nameof(Machine_Product), new {machineId, productId});
 
-                return _mapper.Map<Machine_ProductDTO>(machine_product);
+                return machine_product;
             }
             catch (Exception ex)
             {
@@ -88,7 +84,7 @@ namespace ProfServer.Application.Services
             }
         }
 
-        public async Task<Machine_ProductDTO> UpdateMachine_ProductAsync(UpdateMachine_ProductRequest request)
+        public async Task<Machine_Product> UpdateMachine_ProductAsync(UpdateMachine_ProductRequest request)
         {
             try
             {

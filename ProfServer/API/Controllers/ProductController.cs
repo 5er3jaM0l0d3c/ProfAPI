@@ -19,7 +19,7 @@ namespace ProfServer.API.Controllers
         }
 
         [HttpGet("machine/{id}")]
-        public async Task<ActionResult<IEnumerable<Machine_ProductDTO>>> GetProductsInMachine(int id)
+        public async Task<ActionResult<IEnumerable<Machine_Product>>> GetProductsInMachine(int id)
         {
             var machine_products = await _productService.GetProductsInMachineAsync(id);
             return Ok(machine_products);

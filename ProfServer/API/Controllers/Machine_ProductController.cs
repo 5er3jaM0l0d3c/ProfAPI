@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProfServer.Application.DTOs;
 using ProfServer.Application.Interfaces;
+using ProfServer.Models;
 
 namespace ProfServer.API.Controllers
 {
@@ -17,21 +18,21 @@ namespace ProfServer.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Machine_ProductDTO>> GetMachine_ProductById(int id)
+        public async Task<ActionResult<Machine_Product>> GetMachine_ProductById(int id)
         {
             var machine_product = await _machine_productService.GetMachine_ProductByIdAsync(id);
             return Ok(machine_product);
         }
 
         [HttpGet("machine/{machineId}/product/{productId}")]
-        public async Task<ActionResult<Machine_ProductDTO>> GetMachine_Product(int machineId, int productId)
+        public async Task<ActionResult<Machine_Product>> GetMachine_Product(int machineId, int productId)
         {
             var machine_product = await _machine_productService.GetMachine_ProductByMachineAndProductAsync(machineId, productId);
             return Ok(machine_product);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Machine_ProductDTO>> CreateMachine_Product([FromBody] CreateMachine_ProductRequest request)
+        public async Task<ActionResult<Machine_Product>> CreateMachine_Product([FromBody] CreateMachine_ProductRequest request)
         {
             var machine_product = await _machine_productService.CreateMachine_ProductAsync(request);
             return CreatedAtAction(nameof(GetMachine_ProductById), new { id = machine_product.Id }, machine_product);

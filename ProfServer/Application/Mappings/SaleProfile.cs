@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProfServer.Application.DTOs;
+using ProfServer.Application.DTOs.Requests;
 using ProfServer.Models;
 
 namespace ProfServer.Application.Mappings
@@ -8,6 +9,7 @@ namespace ProfServer.Application.Mappings
     {
         public SaleProfile()
         {
+            CreateMap<CreateSaleRequest, Sale>();
             CreateMap<Sale, SaleDTO>();
             CreateMap<SaleDTO, Sale>()
                 .ForMember(dest => dest.PaymentTypeId, opt => opt.MapFrom(src => src.PaymentType != null ? src.PaymentType.Id : 0))

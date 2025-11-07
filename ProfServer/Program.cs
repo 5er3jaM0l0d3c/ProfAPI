@@ -31,6 +31,9 @@ try
     builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.ProductProfile));
     builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.SaleProfile));
     builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.Machine_ProductProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.MaintenanceProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.Maintanence_WorkDescriptionProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.Maintenance_ProblemProfile));
 
     // JWT settings
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
@@ -88,6 +91,11 @@ try
     builder.Services.AddScoped<IProductRepository, ProductRepository>();
     builder.Services.AddScoped<ISaleRepository, SaleRepository>();
     builder.Services.AddScoped<IMachine_ProductRepository, Machine_ProductRepository>();
+    builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
+    builder.Services.AddScoped<IWorkDescriptionRepository, WorkDescriptionRepository>();
+    builder.Services.AddScoped<IMaintenanceRepository, MaintenanceRepository>();
+    builder.Services.AddScoped<IMaintenance_WorkDescriptionRepository, Maintenance_WorkDescriptionRepository>();
+    builder.Services.AddScoped<IMaintenance_ProblemRepository, Maintenance_ProblemRepository>();
 
     builder.Services.AddScoped<IMachineService, MachineService>();
     builder.Services.AddScoped<IPaymentTypeService, PaymentTypeService>();
@@ -99,6 +107,11 @@ try
     builder.Services.AddScoped<IProductService, ProductService>();
     builder.Services.AddScoped<ISaleService, SaleService>();
     builder.Services.AddScoped<IMachine_ProductService, Machine_ProductService>();
+    builder.Services.AddScoped<IProblemService, ProblemService>();
+    builder.Services.AddScoped<IWorkDescriptionService, WorkDescriptionService>();
+    builder.Services.AddScoped<IMaintenanceService, MaintenanceService>();
+    builder.Services.AddScoped<IMaintenance_WorkDescriptionService, Maintenance_WorkDescriptionService>();
+    builder.Services.AddScoped<IMaintenance_ProblemService, Maintenance_ProblemService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
 
     builder.Services.AddControllers();
