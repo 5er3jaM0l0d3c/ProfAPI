@@ -28,6 +28,9 @@ try
 
     builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.MachineProfile));
     builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.UserProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.ProductProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.SaleProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.Machine_ProductProfile));
 
     // JWT settings
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
@@ -82,6 +85,9 @@ try
     builder.Services.AddScoped<IManufactureCountryRepository, ManufactureCountryRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+    builder.Services.AddScoped<IProductRepository, ProductRepository>();
+    builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+    builder.Services.AddScoped<IMachine_ProductRepository, Machine_ProductRepository>();
 
     builder.Services.AddScoped<IMachineService, MachineService>();
     builder.Services.AddScoped<IPaymentTypeService, PaymentTypeService>();
@@ -90,6 +96,9 @@ try
     builder.Services.AddScoped<IManufactureCountryService, ManufactureCountryService>();
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IRoleService, RoleService>();
+    builder.Services.AddScoped<IProductService, ProductService>();
+    builder.Services.AddScoped<ISaleService, SaleService>();
+    builder.Services.AddScoped<IMachine_ProductService, Machine_ProductService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
 
     builder.Services.AddControllers();
@@ -124,7 +133,7 @@ catch (Exception ex)
     Log.Fatal(ex, "Unhandled exception during host startup");
     throw;
 }
-finally
+finally 
 {
     Log.CloseAndFlush();
 }

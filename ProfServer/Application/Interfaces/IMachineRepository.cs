@@ -6,6 +6,7 @@ namespace ProfServer.Application.Interfaces
 {
     public interface IMachineRepository
     {
+        Task<IEnumerable<Machine>> GetMachinesByIdsAsync(IEnumerable<int> ids);
         Task<IEnumerable<Machine>> GetMachinesAsync();
         Task<Machine?> GetMachineByIdAsync(int id);
         Task<int> AddMachineAsync(Machine machine);

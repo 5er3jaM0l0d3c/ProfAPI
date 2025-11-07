@@ -3,6 +3,7 @@ using ProfServer.Application.DTOs;
 using ProfServer.Application.DTOs.Requests;
 using ProfServer.Application.Interfaces;
 using ProfServer.Application.Mappings;
+using ProfServer.Infrastructure.Repositories;
 using ProfServer.Models;
 using ProfServer.Models.Official;
 using System.Reflection.Metadata;
@@ -16,6 +17,7 @@ namespace ProfServer.Application.Services
         private readonly IMachineStatusService _machineStatusService;
         private readonly IManufacturerService _manufacturerService;
         private readonly IManufactureCountryService _manufactureCountryService;
+        private readonly IMachine_ProductRepository _machine_ProductRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<MachineService> _logger;
 
@@ -24,6 +26,7 @@ namespace ProfServer.Application.Services
             IMachineStatusService machineStatusService,
             IManufacturerService manufacturerService,
             IManufactureCountryService manufactureCountryService,
+            IMachine_ProductRepository machine_ProductRepository,
             IMapper mapper,
             ILogger<MachineService> logger)
         {
@@ -32,6 +35,7 @@ namespace ProfServer.Application.Services
             _machineStatusService = machineStatusService;
             _manufacturerService = manufacturerService;
             _manufactureCountryService = manufactureCountryService;
+            _machine_ProductRepository = machine_ProductRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -118,6 +122,31 @@ namespace ProfServer.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error retrieving machines");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<MachineDTO>> GetMachinesWhereProductAsync(int productId)
+        {
+            try
+            {
+                var machinesIds = await _machine_ProductRepository.GetMachinesWhereProductAsync(productId);
+
+                var machines = await _machineRepository.GetMachinesByIdsAsync(machinesIds);
+
+                foreach (var machine in machines)
+                {
+                    machine.PaymentType = await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
+                    machine.Status = await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+                    machine.Manufacturer = await _manufacturerService.GetManufacturerByIdAsync(machine.ManufacturerId);
+                    machine.ManufactureCountry = await _manufactureCountryService.GetManufactureCountryByIdAsync(machine.ManufactureCountryId);
+                }
+
+                return _mapper.Map<IEnumerable<MachineDTO>>(machines);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting machines containing product {ProductId}", productId);
                 throw;
             }
         }

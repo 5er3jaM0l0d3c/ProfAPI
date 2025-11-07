@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProfServer.Application.DTOs;
 using ProfServer.Application.DTOs.Requests;
 using ProfServer.Application.Interfaces;
+using ProfServer.Application.Services;
 using ProfServer.Models;
 
 namespace ProfServer.API.Controllers
@@ -16,6 +17,13 @@ namespace ProfServer.API.Controllers
         public MachineController(IMachineService machineService)
         {
             _machineService = machineService;
+        }
+
+        [HttpGet("product/{id}")]
+        public async Task<ActionResult<IEnumerable<Machine_ProductDTO>>> GetMachinesWhereProduct(int id)
+        {
+            var machine_products = await _machineService.GetMachinesWhereProductAsync(id);
+            return Ok(machine_products);
         }
 
         [HttpGet]

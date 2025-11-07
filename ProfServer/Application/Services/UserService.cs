@@ -66,17 +66,7 @@ namespace ProfServer.Application.Services
             {
                 var role = await _roleService.GetRoleByIdAsync(request.RoleId);
 
-                User user = new()
-                {
-                    Surname = request.Surname,
-                    Name = request.Name,
-                    Patronymic = request.Patronymic,
-                    Email = request.Email,
-                    Phone = request.Phone,
-                    RoleId = request.RoleId,
-                    Login = request.Login,
-                    Password = HashPassword(Encoding.UTF8.GetBytes(request.Password))
-                };
+                User user = _mapper.Map<User>(request);
 
                 var userId = await _userRepository.CreateUserAsync(user);
                 return await GetUserByIdAsync(userId);

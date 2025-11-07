@@ -66,7 +66,6 @@ namespace ProfServer.API.Middlewares
 
             var problem = new
             {
-                type = "about:blank",
                 title = statusCode.ToString(),
                 status = (int)statusCode,
 

@@ -6,6 +6,7 @@ namespace ProfServer.Application.Interfaces
 {
     public interface IMachineService
     {
+        Task<IEnumerable<MachineDTO>> GetMachinesWhereProductAsync(int productId);
         Task<IEnumerable<MachineDTO>> GetMachinesAsync();
         Task<MachineDTO> GetMachineByIdAsync(int id);
         Task<MachineDTO> CreateMachineAsync(CreateMachineRequest machine);

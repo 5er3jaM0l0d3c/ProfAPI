@@ -79,5 +79,21 @@ namespace ProfServer.Infrastructure.Repositories
 
             return await connection.ExecuteAsync(sql, machine).ContinueWith(t => t.Result > 0);
         }
+
+        public async Task<IEnumerable<Machine>> GetMachinesByIdsAsync(IEnumerable<int> ids)
+        {
+            if (ids == null)
+                return Enumerable.Empty<Machine>();
+
+            var idArray = ids as int[] ?? ids.ToArray();
+            if (idArray.Length == 0)
+                return Enumerable.Empty<Machine>();
+
+            using var connection = _dbConnectionFactory.CreateConnection();
+
+            const string sql = @"SELECT * FROM ""MachineView"" WHERE ""Id"" = ANY(@Ids)";
+
+            return await connection.QueryAsync<Machine>(sql, new { Ids = idArray });
+        }
     }
 }

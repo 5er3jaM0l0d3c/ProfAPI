@@ -1,13 +1,11 @@
-﻿using ProfServer.Application.DTOs;
+﻿using ProfServer.Models;
 
-namespace ProfServer.Models
+namespace ProfServer.Application.DTOs
 {
-    public class Machine_Product
+    public class Machine_ProductDTO
     {
         public int Id { get; set; }
-        public int MachineId { get; set; }
         public MachineDTO Machine { get; set; } = null!;
-        public int ProductId { get; set; }
         public Product Product { get; set; } = null!;
         public int Quantity { get; set; }
     }
