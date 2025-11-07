@@ -13,13 +13,15 @@ namespace ProfServer.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleService _roleService;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserRepository userRepository, ITokenService tokenService, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IRoleService roleService, ITokenService tokenService, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
+            _roleService = roleService;
             _tokenService = tokenService;
             _mapper = mapper;
             _logger = logger;
@@ -62,6 +64,8 @@ namespace ProfServer.Application.Services
         {
             try
             {
+                var role = await _roleService.GetRoleByIdAsync(request.RoleId);
+
                 User user = new()
                 {
                     Surname = request.Surname,
@@ -75,7 +79,6 @@ namespace ProfServer.Application.Services
                 };
 
                 var userId = await _userRepository.CreateUserAsync(user);
-
                 return await GetUserByIdAsync(userId);
             }
             catch (Exception ex)
@@ -104,7 +107,14 @@ namespace ProfServer.Application.Services
         {
             try
             {
-                return await _userRepository.GetUsersAsync();
+                var users = await _userRepository.GetUsersAsync();
+
+                foreach (var user in users)
+                {
+                    user.Role = await _roleService.GetRoleByIdAsync(user.RoleId);
+                }
+
+                return _mapper.Map<IEnumerable<UserDTO>>(users);
             }
             catch (Exception ex)
             {
@@ -121,7 +131,9 @@ namespace ProfServer.Application.Services
                 if(user == null)
                     throw new NotFoundException(nameof(User), id);
 
-                return user;
+                user.Role = await _roleService.GetRoleByIdAsync(user.RoleId);
+
+                return _mapper.Map<UserDTO>(user);
             }
             catch (Exception ex)
             {
@@ -135,6 +147,8 @@ namespace ProfServer.Application.Services
             try
             {
                 await GetUserByIdAsync(request.Id);
+
+                await _roleService.GetRoleByIdAsync(request.RoleId);
 
                 User user = _mapper.Map<User>(request);
 

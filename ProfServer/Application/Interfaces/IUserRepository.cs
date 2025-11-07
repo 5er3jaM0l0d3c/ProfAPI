@@ -6,10 +6,10 @@ namespace ProfServer.Application.Interfaces
     public interface IUserRepository
     {
         Task<int> UserExistsAsync(string login, byte[] password);
-        Task<IEnumerable<UserDTO>> GetUsersAsync();
-        Task<UserDTO?> GetUserByIdAsync(int id);
-        Task<int> CreateUserAsync(User userDto);
-        Task<bool> UpdateUserAsync(User userDto);
+        Task<IEnumerable<User>> GetUsersAsync();
+        Task<User?> GetUserByIdAsync(int id);
+        Task<int> CreateUserAsync(User user);
+        Task<bool> UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(int id);
     }
 }

@@ -81,6 +81,7 @@ try
     builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
     builder.Services.AddScoped<IManufactureCountryRepository, ManufactureCountryRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
     builder.Services.AddScoped<IMachineService, MachineService>();
     builder.Services.AddScoped<IPaymentTypeService, PaymentTypeService>();
@@ -88,6 +89,7 @@ try
     builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
     builder.Services.AddScoped<IManufactureCountryService, ManufactureCountryService>();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IRoleService, RoleService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
 
     builder.Services.AddControllers();

@@ -40,6 +40,11 @@ namespace ProfServer.Application.Services
         {
             try
             {
+                await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
+                await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+                await _manufacturerService.GetManufacturerByIdAsync(machine.ManufacturerId);
+                await _manufactureCountryService.GetManufactureCountryByIdAsync(machine.ManufactureCountryId);
+
                 Machine machineEntity = _mapper.Map<Machine>(machine);
 
                 var machineId = await _machineRepository.AddMachineAsync(machineEntity);
@@ -122,6 +127,11 @@ namespace ProfServer.Application.Services
             try
             {
                 await GetMachineByIdAsync(machine.Id); // Verify existence
+
+                await _paymentTypeService.GetPaymentTypeByIdAsync(machine.PaymentTypeId);
+                await _machineStatusService.GetMachineStatusByIdAsync(machine.StatusId);
+                await _manufacturerService.GetManufacturerByIdAsync(machine.ManufacturerId);
+                await _manufactureCountryService.GetManufactureCountryByIdAsync(machine.ManufactureCountryId);
 
                 var machineEntity = _mapper.Map<Machine>(machine);
                 if(!await _machineRepository.UpdateMachineAsync(machineEntity))

@@ -38,7 +38,7 @@ namespace ProfServer.Infrastructure.Repositories
           return await connection.ExecuteAsync(sql, new { Id = id }).ContinueWith(r => r.Result > 0);
         }
 
-        public async Task<UserDTO?> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
             using var connection = _dbConnectinFactory.CreateConnection();
 
@@ -47,10 +47,10 @@ namespace ProfServer.Infrastructure.Repositories
                 FROM ""User"" u
                 WHERE u.""Id"" = @Id";
 
-            return await connection.QuerySingleOrDefaultAsync<UserDTO>(sql, new { Id = id });
+            return await connection.QuerySingleOrDefaultAsync<User>(sql, new { Id = id });
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             using var connection = _dbConnectinFactory.CreateConnection();
 
@@ -58,10 +58,10 @@ namespace ProfServer.Infrastructure.Repositories
                 SELECT u.""Id"", u.""Surname"", u.""Name"", u.""Patronymic"", u.""Email"", u.""Phone"", u.""RoleId"", u.""Login""
                 FROM ""User"" u";
 
-            return await connection.QueryAsync<UserDTO>(sql);
+            return await connection.QueryAsync<User>(sql);
         }
 
-        public async Task<bool> UpdateUserAsync(User userDto)
+        public async Task<bool> UpdateUserAsync(User user)
         {
             using var connection = _dbConnectinFactory.CreateConnection();
 
@@ -77,7 +77,7 @@ namespace ProfServer.Infrastructure.Repositories
                     ""Password"" = @Password
                 WHERE ""Id"" = @Id";
 
-            return await connection.ExecuteAsync(sql, userDto).ContinueWith(t => t.Result > 0);
+            return await connection.ExecuteAsync(sql, user).ContinueWith(t => t.Result > 0);
         }
 
         public async Task<int> UserExistsAsync(string login, byte[] password)

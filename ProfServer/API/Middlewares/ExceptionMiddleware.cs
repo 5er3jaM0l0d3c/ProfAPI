@@ -49,6 +49,7 @@ namespace ProfServer.API.Middlewares
             // DomainException трактуем как ошибка валидации/бизнес-правил — BadRequest
             var statusCode = ex switch
             {
+                AuthException => HttpStatusCode.Unauthorized,
                 ConflictException => HttpStatusCode.Conflict,
                 ArgumentException => HttpStatusCode.BadRequest,
                 NotFoundException => HttpStatusCode.NotFound,
@@ -68,8 +69,8 @@ namespace ProfServer.API.Middlewares
                 type = "about:blank",
                 title = statusCode.ToString(),
                 status = (int)statusCode,
-                // В development возвращаем детальный стэк, в prod — только сообщение
-                detail = _env.IsDevelopment() ? ex.ToString() : ex.Message,
+
+                detail = ex.Message,
                 traceId = context.TraceIdentifier
             };
 

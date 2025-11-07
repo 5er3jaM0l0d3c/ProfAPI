@@ -13,6 +13,9 @@ namespace ProfServer.Application.Mappings
             CreateMap<CreateUserRequest, User>();
             CreateMap<UpdateUserRequest, User>();
 
+            CreateMap<UserDTO, User>()
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Role != null ? src.Role.Id : 0));
+
 
         }
     }
