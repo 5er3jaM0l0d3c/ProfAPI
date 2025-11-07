@@ -27,6 +27,7 @@ try
     builder.Host.UseSerilog();
 
     builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.MachineProfile));
+    builder.Services.AddAutoMapper(cfg => { }, typeof(ProfServer.Application.Mappings.UserProfile));
 
     // JWT settings
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
@@ -79,12 +80,14 @@ try
     builder.Services.AddScoped<IMachineStatusRepository, MachineStatusRepository>();
     builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
     builder.Services.AddScoped<IManufactureCountryRepository, ManufactureCountryRepository>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
 
     builder.Services.AddScoped<IMachineService, MachineService>();
     builder.Services.AddScoped<IPaymentTypeService, PaymentTypeService>();
     builder.Services.AddScoped<IMachineStatusService, MachineStatusService>();
     builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
     builder.Services.AddScoped<IManufactureCountryService, ManufactureCountryService>();
+    builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
 
     builder.Services.AddControllers();

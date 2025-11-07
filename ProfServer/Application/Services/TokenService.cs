@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ProfServer.Application.DTOs.Responses;
 using ProfServer.Application.Interfaces;
 using ProfServer.Models.Official;
 
@@ -23,7 +24,7 @@ namespace ProfServer.Application.Services
             _keyBytes = Encoding.UTF8.GetBytes(_settings.Key);
         }
 
-        public string GenerateToken(IEnumerable<Claim> claims)
+        public TokenResponse GenerateToken(IEnumerable<Claim> claims)
         {
             var now = DateTime.UtcNow;
             var expires = now.AddMinutes(_settings.ExpiresMinutes);
@@ -39,7 +40,11 @@ namespace ProfServer.Application.Services
                 expires: expires,
                 signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            return new TokenResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(jwt),
+                Expiration = expires
+            };
         }
     }
 }

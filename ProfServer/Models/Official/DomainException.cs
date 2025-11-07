@@ -30,4 +30,12 @@
         {
         }
     }
+
+    public class AuthException : DomainException
+    {
+        public AuthException()
+            : base("Authentication failed. Invalid credentials.")
+        {
+        }
+    }
 }
