@@ -1,4 +1,6 @@
 # Инструкция для запуска API
 * Должен быть установлен .NET 8
-* Открыть терминал в папке __проекта__
-* Ввести `dotnet run --build`
+* Запустить `ProfServer.exe`
+
+# Документация, Swagger
+Здесь [https](https://localhost:7014/swagger), [http](http://localhost:5179/swagger)
