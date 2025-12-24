@@ -1,6 +1,7 @@
 using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ProfServer.API.Middlewares;
 using ProfServer.Application.Interfaces;
 using ProfServer.Application.Services;
@@ -117,9 +118,16 @@ try
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Prof API",
+            Version = "v1"
+        });
+    });
 
-    builder.WebHost.UseUrls("https://localhost:7014", "http://localhost:5178");
+    builder.WebHost.UseUrls("https://localhost:7014", "http://localhost:5179");
 
 
     var app = builder.Build();
@@ -130,12 +138,13 @@ try
     logger.LogInformation("Now listening on: http://localhost:5179");
 
 
-    if (app.Environment.IsDevelopment())
-    {
+
         app.UseSwagger();
-        app.UseSwaggerUI();
-        logger.LogInformation("Swagger enabled in Development environment");
-    }
+        app.UseSwaggerUI(options =>
+        {
+            options.RoutePrefix = "swagger"; // Делаем swagger доступным по /swagger
+        });
+    
 
     app.UseExceptionMiddleware();
 
