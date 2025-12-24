@@ -119,9 +119,16 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    builder.WebHost.UseUrls("https://localhost:7014", "http://localhost:5178");
+
+
     var app = builder.Build();
     var logger = app.Services.GetRequiredService<ILogger<Program>>();
     logger.LogInformation("Application starting up");
+    
+    logger.LogInformation("Now listening on: https://localhost:7014");
+    logger.LogInformation("Now listening on: http://localhost:5179");
+
 
     if (app.Environment.IsDevelopment())
     {
